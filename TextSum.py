@@ -1,42 +1,44 @@
-from transformers import pipeline
+"""
+TextSum: A Simple Text Summarizer
+A lightweight Python tool that extracts key sentences from longer texts.
+Uses basic extractive summarization without external dependencies.
+"""
 
-print("Loading the AI model... (this may take a moment on first run)")
-model_name = "t5-small"
-summarizer = pipeline("summarization", model=model_name,
-                      tokenizer=model_name, framework="pt")
-print("Model loaded successfully!")
+def simple_summarizer(text, max_sentences=3):
+    """
+    Extracts key sentences from text to create a summary.
+    This function uses a simple extractive approach:
+    - First sentence: Usually contains the main topic/thesis
+    - Middle sentence: Often contains supporting details or examples  
+    - Second to last sentence: Typically contains conclusions or solutions
+    """
+    # Split the text into sentences using period+space as delimiter
+    sentences = text.split('. ')
 
+    # If the text is already shorter than our target, return it unchanged
+    if len(sentences) <= max_sentences:
+        return text
 
-def summarize_text(long_text):
-    if len(long_text.split()) < 30:
-        return "Text is too short. Please provide a longer paragraph."
-    words = long_text.split()
-    if len(words) > 1024:
-        long_text = ' '.join(words[:1024])
-        print("Note: Text was too long and was truncated.")
-    summary = summarizer(
-        long_text,
-        max_length=150,
-        min_length=40,
-        do_sample=False
-    )
-    return summary[0]['summary_text']
+    # Select the most important sentences for the summary
+    summary_sentences = []
+    summary_sentences.append(sentences[0])  
+    if len(sentences) > 3:
+        summary_sentences.append(sentences[len(sentences)//2])
+    summary_sentences.append(sentences[-2])
+    # Rejoin the selected sentences into a coherent summary
+    return '. '.join(summary_sentences) + '.'  
 
 
 def main():
-    print("\nPaste your text below and press Enter when finished:")
+    print("Paste your text and press Enter when finished:")
     user_input = input()
+
     if user_input.strip():
-        print("\nGenerating summary...")
-        result = summarize_text(user_input)
-        print("\n" + "="*50)
-        print("SUMMARY:")
-        print("="*50)
-        print(result)
-        print("="*50)
+        summary = simple_summarizer(user_input)  
+        print("\nSummary:")
+        print(summary)
     else:
         print("No text was provided.")
-
 
 if __name__ == "__main__":
     main()
