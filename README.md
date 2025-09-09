@@ -23,5 +23,5 @@ This repository contains two implementations of text summarization:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/text-summarizers.git
+   git clone https://github.com/xReaLxSouLs/text-summarizers.git
    cd text-summarizers
