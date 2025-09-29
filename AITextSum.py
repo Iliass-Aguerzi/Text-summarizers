@@ -51,7 +51,7 @@ def main():
     """
     Main function that handles user input and AI summarization.
     """
-    print("🤖 AI Text Summarizer")
+    print(" AI Text Summarizer")
     print("Paste your text below and press Enter when finished:")
     print("-" * 50)
     user_input = input()
